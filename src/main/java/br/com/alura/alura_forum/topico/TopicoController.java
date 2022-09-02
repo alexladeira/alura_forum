@@ -16,8 +16,9 @@ public class TopicoController {
     private TopicoRepository repository;
 
     @GetMapping("/topicos")
-    public List<TopicoDto> list() {
-        return repository.findAll().stream().map(Topico::toDto).collect(Collectors.toList());
+    public List<TopicoDto> list(String nomeCurso) {
+        var result = nomeCurso != null ? repository.findByCursoNome(nomeCurso) : repository.findAll();
+        return result.stream().map(Topico::toDto).collect(Collectors.toList());
     }
 
 }
