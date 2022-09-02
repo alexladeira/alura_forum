@@ -3,6 +3,7 @@ package br.com.alura.alura_forum.topico.model;
 import br.com.alura.alura_forum.model.Curso;
 import br.com.alura.alura_forum.model.Resposta;
 import br.com.alura.alura_forum.model.Usuario;
+import br.com.alura.alura_forum.topico.command.TopicoCommand;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 
 import javax.persistence.*;
@@ -29,6 +30,15 @@ public final class Topico {
     private Curso curso;
     @OneToMany(mappedBy = "topico")
     private List<Resposta> respostas;
+
+    public Topico() {
+    }
+
+    public Topico(String titulo, String mensagem, Curso curso) {
+        this.titulo  =titulo;
+        this.mensagem = mensagem;
+        this.curso = curso;
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -80,6 +90,10 @@ public final class Topico {
 
     public static TopicoDto toDto(Topico topico) {
         return new TopicoDto(topico.id(), topico.titulo(), topico.mensagem(), topico.dataCriacao());
+    }
+
+    public static Topico fromCommand(TopicoCommand command, Curso curso) {
+        return new Topico(command.titulo(), command.mensagem(), curso);
     }
 
     @Override
