@@ -7,33 +7,43 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public final class Curso {
+public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String categoria;
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
-    public String nome() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
         return nome;
     }
 
-    public String categoria() {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCategoria() {
         return categoria;
     }
 
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Curso) obj;
-        return Objects.equals(this.id, that.id) &&
-                Objects.equals(this.nome, that.nome) &&
-                Objects.equals(this.categoria, that.categoria);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Curso curso = (Curso) o;
+        return Objects.equals(id, curso.id) && Objects.equals(nome, curso.nome) && Objects.equals(categoria, curso.categoria);
     }
 
     @Override
@@ -43,10 +53,6 @@ public final class Curso {
 
     @Override
     public String toString() {
-        return "Curso[" +
-                "id=" + id + ", " +
-                "nome=" + nome + ", " +
-                "categoria=" + categoria + ']';
+        return "Curso{" + "id=" + id + ", nome='" + nome + '\'' + ", categoria='" + categoria + '\'' + '}';
     }
-
 }

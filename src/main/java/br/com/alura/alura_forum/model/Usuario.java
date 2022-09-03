@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public final class Usuario {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,31 +15,44 @@ public final class Usuario {
     private String email;
     private String senha;
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
-    public String nome() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
         return nome;
     }
 
-    public String email() {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
         return email;
     }
 
-    public String senha() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
         return senha;
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Usuario) obj;
-        return Objects.equals(this.id, that.id) &&
-                Objects.equals(this.nome, that.nome) &&
-                Objects.equals(this.email, that.email) &&
-                Objects.equals(this.senha, that.senha);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id) && Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha);
     }
 
     @Override
@@ -49,11 +62,6 @@ public final class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario[" +
-                "id=" + id + ", " +
-                "nome=" + nome + ", " +
-                "email=" + email + ", " +
-                "senha=" + senha + ']';
+        return "Usuario{" + "id=" + id + ", nome='" + nome + '\'' + ", email='" + email + '\'' + ", senha='" + senha + '\'' + '}';
     }
-
 }

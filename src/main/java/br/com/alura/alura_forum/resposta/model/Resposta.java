@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public final class Resposta {
+public class Resposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,12 +23,25 @@ public final class Resposta {
     private Usuario autor;
     private boolean solucao;
 
-    public Usuario getAutor() {
-        return autor;
+    public static RespostaDto toDto(Resposta resposta) {
+        return new RespostaDto(resposta.getId(), resposta.getMensagem(), resposta.getDataCriacao(), resposta.getAutor()
+                .nome());
     }
 
-    public void setAutor(Usuario autor) {
-        this.autor = autor;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 
     public Topico getTopico() {
@@ -39,40 +52,36 @@ public final class Resposta {
         this.topico = topico;
     }
 
-    public Long id() {
-        return id;
-    }
-
-    public String mensagem() {
-        return mensagem;
-    }
-
-    public Topico topico() {
-        return topico;
-    }
-
-    public LocalDateTime dataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public Usuario autor() {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Usuario getAutor() {
         return autor;
     }
 
-    public boolean solucao() {
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
+    }
+
+    public boolean isSolucao() {
         return solucao;
     }
 
-    public static RespostaDto toDto(Resposta resposta) {
-        return new RespostaDto(resposta.id(), resposta.mensagem(), resposta.dataCriacao(), resposta.autor().nome());
+    public void setSolucao(boolean solucao) {
+        this.solucao = solucao;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Resposta) obj;
-        return Objects.equals(this.id, that.id) && Objects.equals(this.mensagem, that.mensagem) && Objects.equals(this.topico, that.topico) && Objects.equals(this.dataCriacao, that.dataCriacao) && Objects.equals(this.autor, that.autor) && this.solucao == that.solucao;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resposta resposta = (Resposta) o;
+        return solucao == resposta.solucao && Objects.equals(id, resposta.id) && Objects.equals(mensagem, resposta.mensagem) && Objects.equals(topico, resposta.topico) && Objects.equals(dataCriacao, resposta.dataCriacao) && Objects.equals(autor, resposta.autor);
     }
 
     @Override
@@ -82,7 +91,6 @@ public final class Resposta {
 
     @Override
     public String toString() {
-        return "Resposta[" + "id=" + id + ", " + "mensagem=" + mensagem + ", " + "topico=" + topico + ", " + "dataCriacao=" + dataCriacao + ", " + "autor=" + autor + ", " + "solucao=" + solucao + ']';
+        return "Resposta{" + "id=" + id + ", mensagem='" + mensagem + '\'' + ", topico=" + topico + ", dataCriacao=" + dataCriacao + ", autor=" + autor + ", solucao=" + solucao + '}';
     }
-
 }

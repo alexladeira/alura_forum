@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
-public final class Topico {
+public class Topico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,63 @@ public final class Topico {
         this.curso = curso;
     }
 
+
+    public static TopicoDto toDto(Topico topico) {
+        return new TopicoDto(topico.getId(), topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao());
+    }
+
+    public static Topico fromCommand(TopicoCommand command, Curso curso) {
+        return new Topico(command.titulo(), command.mensagem(), curso);
+    }
+
+    public static TopicoDetailDto toDetailDto(Topico topico) {
+        return new TopicoDetailDto(topico.getId(), topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao(), topico.getUsuario()
+                .getNome(), topico.getStatus(), topico.getRespostas()
+                .stream()
+                .map(Resposta::toDto)
+                .collect(Collectors.toList()));
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public StatusTopico getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusTopico status) {
+        this.status = status;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -58,52 +115,12 @@ public final class Topico {
         this.curso = curso;
     }
 
-    public Long id() {
-        return id;
-    }
-
-    public String titulo() {
-        return titulo;
-    }
-
-    public String mensagem() {
-        return mensagem;
-    }
-
-    public LocalDateTime dataCriacao() {
-        return dataCriacao;
-    }
-
-    public StatusTopico status() {
-        return status;
-    }
-
-    public Usuario usuario() {
-        return usuario;
-    }
-
-    public Curso curso() {
-        return curso;
-    }
-
-    public List<Resposta> respostas() {
+    public List<Resposta> getRespostas() {
         return respostas;
     }
 
-    public static TopicoDto toDto(Topico topico) {
-        return new TopicoDto(topico.id(), topico.titulo(), topico.mensagem(), topico.dataCriacao());
-    }
-
-    public static Topico fromCommand(TopicoCommand command, Curso curso) {
-        return new Topico(command.titulo(), command.mensagem(), curso);
-    }
-
-    public static TopicoDetailDto toDetailDto(Topico topico) {
-        return new TopicoDetailDto(topico.id(), topico.titulo(), topico.mensagem(), topico.dataCriacao(), topico.getUsuario()
-                .nome(), topico.status(), topico.respostas()
-                .stream()
-                .map(Resposta::toDto)
-                .collect(Collectors.toList()));
+    public void setRespostas(List<Resposta> respostas) {
+        this.respostas = respostas;
     }
 
     @Override
@@ -111,14 +128,7 @@ public final class Topico {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (Topico) obj;
-        return Objects.equals(this.id, that.id) &&
-                Objects.equals(this.titulo, that.titulo) &&
-                Objects.equals(this.mensagem, that.mensagem) &&
-                Objects.equals(this.dataCriacao, that.dataCriacao) &&
-                Objects.equals(this.status, that.status) &&
-                Objects.equals(this.usuario, that.usuario) &&
-                Objects.equals(this.curso, that.curso) &&
-                Objects.equals(this.respostas, that.respostas);
+        return Objects.equals(this.id, that.id) && Objects.equals(this.titulo, that.titulo) && Objects.equals(this.mensagem, that.mensagem) && Objects.equals(this.dataCriacao, that.dataCriacao) && Objects.equals(this.status, that.status) && Objects.equals(this.usuario, that.usuario) && Objects.equals(this.curso, that.curso) && Objects.equals(this.respostas, that.respostas);
     }
 
     @Override
@@ -128,15 +138,6 @@ public final class Topico {
 
     @Override
     public String toString() {
-        return "Topico[" +
-                "id=" + id + ", " +
-                "titulo=" + titulo + ", " +
-                "mensagem=" + mensagem + ", " +
-                "dataCriacao=" + dataCriacao + ", " +
-                "status=" + status + ", " +
-                "usuario=" + usuario + ", " +
-                "curso=" + curso + ", " +
-                "respostas=" + respostas + ']';
+        return "Topico[" + "id=" + id + ", " + "titulo=" + titulo + ", " + "mensagem=" + mensagem + ", " + "dataCriacao=" + dataCriacao + ", " + "status=" + status + ", " + "usuario=" + usuario + ", " + "curso=" + curso + ", " + "respostas=" + respostas + ']';
     }
-
 }
