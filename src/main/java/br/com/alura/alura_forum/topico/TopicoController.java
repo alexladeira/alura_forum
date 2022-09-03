@@ -42,8 +42,7 @@ public class TopicoController {
 
     @GetMapping("/{id}")
     public TopicoDetailDto detail(@PathVariable Long id) {
-        var topico = topicoRepository.findById(id).orElseThrow();
-        return Topico.toDetailDto(topico);
+        return Topico.toDetailDto(topicoRepository.getReferenceById(id));
     }
 
 }
