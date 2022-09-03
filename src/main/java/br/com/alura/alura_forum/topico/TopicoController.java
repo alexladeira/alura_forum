@@ -3,6 +3,7 @@ package br.com.alura.alura_forum.topico;
 import br.com.alura.alura_forum.curso.CursoRepository;
 import br.com.alura.alura_forum.model.Curso;
 import br.com.alura.alura_forum.topico.command.TopicoCommand;
+import br.com.alura.alura_forum.topico.dto.TopicoDetailDto;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class TopicoController {
         Topico topico = topicoRepository.save(Topico.fromCommand(command, curso));
         URI uri = builder.path("/topicos/{id}").buildAndExpand(topico.id()).toUri();
         return ResponseEntity.created(uri).body(Topico.toDto(topico));
+    }
+
+    @GetMapping("/{id}")
+    public TopicoDetailDto detail(@PathVariable Long id) {
+        var topico = topicoRepository.findById(id).orElseThrow();
+        return Topico.toDetailDto(topico);
     }
 
 }

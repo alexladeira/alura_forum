@@ -1,5 +1,7 @@
-package br.com.alura.alura_forum.model;
+package br.com.alura.alura_forum.resposta.model;
 
+import br.com.alura.alura_forum.model.Usuario;
+import br.com.alura.alura_forum.resposta.dto.RespostaDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 
 import javax.persistence.*;
@@ -61,17 +63,16 @@ public final class Resposta {
         return solucao;
     }
 
+    public static RespostaDto toDto(Resposta resposta) {
+        return new RespostaDto(resposta.id(), resposta.mensagem(), resposta.dataCriacao(), resposta.autor().nome());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (Resposta) obj;
-        return Objects.equals(this.id, that.id) &&
-                Objects.equals(this.mensagem, that.mensagem) &&
-                Objects.equals(this.topico, that.topico) &&
-                Objects.equals(this.dataCriacao, that.dataCriacao) &&
-                Objects.equals(this.autor, that.autor) &&
-                this.solucao == that.solucao;
+        return Objects.equals(this.id, that.id) && Objects.equals(this.mensagem, that.mensagem) && Objects.equals(this.topico, that.topico) && Objects.equals(this.dataCriacao, that.dataCriacao) && Objects.equals(this.autor, that.autor) && this.solucao == that.solucao;
     }
 
     @Override
@@ -81,13 +82,7 @@ public final class Resposta {
 
     @Override
     public String toString() {
-        return "Resposta[" +
-                "id=" + id + ", " +
-                "mensagem=" + mensagem + ", " +
-                "topico=" + topico + ", " +
-                "dataCriacao=" + dataCriacao + ", " +
-                "autor=" + autor + ", " +
-                "solucao=" + solucao + ']';
+        return "Resposta[" + "id=" + id + ", " + "mensagem=" + mensagem + ", " + "topico=" + topico + ", " + "dataCriacao=" + dataCriacao + ", " + "autor=" + autor + ", " + "solucao=" + solucao + ']';
     }
 
 }

@@ -1,15 +1,17 @@
 package br.com.alura.alura_forum.topico.model;
 
 import br.com.alura.alura_forum.model.Curso;
-import br.com.alura.alura_forum.model.Resposta;
 import br.com.alura.alura_forum.model.Usuario;
+import br.com.alura.alura_forum.resposta.model.Resposta;
 import br.com.alura.alura_forum.topico.command.TopicoCommand;
+import br.com.alura.alura_forum.topico.dto.TopicoDetailDto;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 public final class Topico {
@@ -35,7 +37,7 @@ public final class Topico {
     }
 
     public Topico(String titulo, String mensagem, Curso curso) {
-        this.titulo  =titulo;
+        this.titulo = titulo;
         this.mensagem = mensagem;
         this.curso = curso;
     }
@@ -94,6 +96,14 @@ public final class Topico {
 
     public static Topico fromCommand(TopicoCommand command, Curso curso) {
         return new Topico(command.titulo(), command.mensagem(), curso);
+    }
+
+    public static TopicoDetailDto toDetailDto(Topico topico) {
+        return new TopicoDetailDto(topico.id(), topico.titulo(), topico.mensagem(), topico.dataCriacao(), topico.getUsuario()
+                .nome(), topico.status(), topico.respostas()
+                .stream()
+                .map(Resposta::toDto)
+                .collect(Collectors.toList()));
     }
 
     @Override
