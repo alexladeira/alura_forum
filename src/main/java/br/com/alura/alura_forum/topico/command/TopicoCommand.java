@@ -1,4 +1,10 @@
 package br.com.alura.alura_forum.topico.command;
 
-public record TopicoCommand(String titulo, String mensagem, String nomeCurso) {
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public record TopicoCommand(@NotNull @NotEmpty @Length(min = 5) String titulo, @NotNull @NotEmpty String mensagem,
+                            @NotNull @NotEmpty String nomeCurso) {
 }
