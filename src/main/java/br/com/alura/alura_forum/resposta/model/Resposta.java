@@ -25,7 +25,7 @@ public class Resposta {
 
     public static RespostaDto toDto(Resposta resposta) {
         return new RespostaDto(resposta.getId(), resposta.getMensagem(), resposta.getDataCriacao(), resposta.getAutor()
-                .nome());
+                .getNome());
     }
 
     public Long getId() {

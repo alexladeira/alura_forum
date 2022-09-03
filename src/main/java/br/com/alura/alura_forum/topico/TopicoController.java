@@ -35,6 +35,7 @@ public class TopicoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<TopicoDto> post(@RequestBody @Valid TopicoCommand command, UriComponentsBuilder builder) {
         Curso curso = cursoRepository.findByNome(command.nomeCurso());
         Topico topico = topicoRepository.save(Topico.fromCommand(command, curso));
@@ -52,6 +53,13 @@ public class TopicoController {
     public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicoUpdateCommand command) {
         Topico topico = TopicoUpdateCommand.update(topicoRepository.getReferenceById(id), command);
         return ResponseEntity.ok(Topico.toDto(topico));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity delete(@PathVariable Long id){
+        topicoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }
