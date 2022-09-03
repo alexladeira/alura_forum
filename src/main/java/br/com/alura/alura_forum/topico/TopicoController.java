@@ -4,7 +4,6 @@ import br.com.alura.alura_forum.curso.CursoRepository;
 import br.com.alura.alura_forum.model.Curso;
 import br.com.alura.alura_forum.topico.command.TopicoCommand;
 import br.com.alura.alura_forum.topico.command.TopicoUpdateCommand;
-import br.com.alura.alura_forum.topico.dto.TopicoDetailDto;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController()
@@ -44,22 +44,38 @@ public class TopicoController {
     }
 
     @GetMapping("/{id}")
-    public TopicoDetailDto detail(@PathVariable Long id) {
-        return Topico.toDetailDto(topicoRepository.getReferenceById(id));
+    public ResponseEntity<Object> detail(@PathVariable Long id) {
+        var topico = find(id);
+        if (topico.isPresent()) {
+//            return Topico.toDetailDto(topicoRepository.getReferenceById(id));
+            return ResponseEntity.ok(Topico.toDetailDto(topico.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicoUpdateCommand command) {
-        Topico topico = TopicoUpdateCommand.update(topicoRepository.getReferenceById(id), command);
-        return ResponseEntity.ok(Topico.toDto(topico));
+        var optional = find(id);
+        if (optional.isPresent()) {
+            var topico = TopicoUpdateCommand.update(optional.get(), command);
+            return ResponseEntity.ok(Topico.toDto(topico));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id){
-        topicoRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity delete(@PathVariable Long id) {
+        if (find(id).isPresent()) {
+            topicoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    private Optional<Topico> find(Long id) {
+        return topicoRepository.findById(id);
     }
 
 }
