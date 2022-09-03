@@ -45,12 +45,10 @@ public class TopicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> detail(@PathVariable Long id) {
+        //            return Topico.toDetailDto(topicoRepository.getReferenceById(id));
         var topico = find(id);
-        if (topico.isPresent()) {
-//            return Topico.toDetailDto(topicoRepository.getReferenceById(id));
-            return ResponseEntity.ok(Topico.toDetailDto(topico.get()));
-        }
-        return ResponseEntity.notFound().build();
+        return topico.<ResponseEntity<Object>>map(value -> ResponseEntity.ok(Topico.toDetailDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
