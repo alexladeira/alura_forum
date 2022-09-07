@@ -8,9 +8,9 @@ import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,8 +31,7 @@ public class TopicoController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso, @RequestParam int page, @RequestParam int size, @RequestParam String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, sort);
+    public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         var result = nomeCurso != null ? topicoRepository.findByCursoNome(nomeCurso, pageable) : topicoRepository.findAll(pageable);
         return result.map(Topico::toDto);
     }
