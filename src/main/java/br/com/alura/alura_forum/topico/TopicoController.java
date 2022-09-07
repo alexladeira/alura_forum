@@ -7,6 +7,9 @@ import br.com.alura.alura_forum.topico.command.TopicoUpdateCommand;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,9 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/topicos")
@@ -29,9 +30,10 @@ public class TopicoController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public List<TopicoDto> list(String nomeCurso) {
-        var result = nomeCurso != null ? topicoRepository.findByCursoNome(nomeCurso) : topicoRepository.findAll();
-        return result.stream().map(Topico::toDto).collect(Collectors.toList());
+    public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso, @RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        var result = nomeCurso != null ? topicoRepository.findByCursoNome(nomeCurso, pageable) : topicoRepository.findAll(pageable);
+        return result.map(Topico::toDto);
     }
 
     @PostMapping
