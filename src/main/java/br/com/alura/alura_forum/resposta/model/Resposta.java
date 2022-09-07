@@ -1,6 +1,6 @@
 package br.com.alura.alura_forum.resposta.model;
 
-import br.com.alura.alura_forum.model.Usuario;
+import br.com.alura.alura_forum.usuario.model.Usuario;
 import br.com.alura.alura_forum.resposta.dto.RespostaDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 

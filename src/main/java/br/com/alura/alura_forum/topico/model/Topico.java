@@ -1,7 +1,7 @@
 package br.com.alura.alura_forum.topico.model;
 
 import br.com.alura.alura_forum.model.Curso;
-import br.com.alura.alura_forum.model.Usuario;
+import br.com.alura.alura_forum.usuario.model.Usuario;
 import br.com.alura.alura_forum.resposta.model.Resposta;
 import br.com.alura.alura_forum.topico.command.TopicoCommand;
 import br.com.alura.alura_forum.topico.dto.TopicoDetailDto;
