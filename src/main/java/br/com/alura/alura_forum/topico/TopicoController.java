@@ -7,6 +7,8 @@ import br.com.alura.alura_forum.topico.command.TopicoUpdateCommand;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +33,7 @@ public class TopicoController {
     private CursoRepository cursoRepository;
 
     @GetMapping
+    @Cacheable(value = "topicList")
     public Page<TopicoDto> list(@RequestParam(required = false) String nomeCurso, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         var result = nomeCurso != null ? topicoRepository.findByCursoNome(nomeCurso, pageable) : topicoRepository.findAll(pageable);
         return result.map(Topico::toDto);
@@ -38,6 +41,7 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "topicList", allEntries = true)
     public ResponseEntity<TopicoDto> post(@RequestBody @Valid TopicoCommand command, UriComponentsBuilder builder) {
         Curso curso = cursoRepository.findByNome(command.nomeCurso());
         Topico topico = topicoRepository.save(Topico.fromCommand(command, curso));
@@ -55,6 +59,7 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "topicList", allEntries = true)
     public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid TopicoUpdateCommand command) {
         var optional = find(id);
         if (optional.isPresent()) {
@@ -66,6 +71,7 @@ public class TopicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "topicList", allEntries = true)
     public ResponseEntity delete(@PathVariable Long id) {
         if (find(id).isPresent()) {
             topicoRepository.deleteById(id);
