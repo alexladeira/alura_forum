@@ -6,6 +6,7 @@ import br.com.alura.alura_forum.topico.command.TopicoCommand;
 import br.com.alura.alura_forum.topico.command.TopicoUpdateCommand;
 import br.com.alura.alura_forum.topico.dto.TopicoDto;
 import br.com.alura.alura_forum.topico.model.Topico;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -72,6 +73,7 @@ public class TopicoController {
     @DeleteMapping("/{id}")
     @Transactional
     @CacheEvict(value = "topicList", allEntries = true)
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity delete(@PathVariable Long id) {
         if (find(id).isPresent()) {
             topicoRepository.deleteById(id);
