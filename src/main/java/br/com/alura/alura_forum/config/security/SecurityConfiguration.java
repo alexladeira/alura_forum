@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.GET, "/swagger-ui/**")
                 .permitAll()
                 .antMatchers(HttpMethod.DELETE, "/topicos/*")
-                .hasRole("MODERADOR")
+                .hasRole(UserRole.MODERADOR.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -65,6 +65,6 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
+                .antMatchers("/**.html", "/v3/api-docs/**", "/webjars/**", "/configuration/**", "/swagger-ui/**");
     }
 }
