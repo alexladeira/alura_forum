@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@Profile("prod")
+@Profile(value = {"test", "prod"})
 public class SecurityConfiguration {
     @Autowired
     private AuthenticationService authenticationService;
